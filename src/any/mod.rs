@@ -5,7 +5,7 @@ pub trait TypeURL {
     fn type_url() -> &'static str;
 }
 
-pub fn to_any<M>(message: M) -> Any
+pub fn to_any<M>(message: &M) -> Any
 where
     M: Message + TypeURL,
 {

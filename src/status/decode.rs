@@ -10,19 +10,22 @@ pub struct StatusDecoder {
 }
 
 impl StatusDecoder {
-    pub fn from_status(status: Status) -> Result<Self, DecodeError> {
+    pub fn from_status(status: &Status) -> Result<Self, DecodeError> {
         let status = proto::Status::decode(status.details())?;
         Ok(Self { status })
     }
 
+    #[must_use]
     pub fn code(&self) -> Code {
         Code::from_i32(self.status.code)
     }
 
+    #[must_use]
     pub fn message(&self) -> &str {
         &self.status.message
     }
 
+    #[must_use]
     pub fn details(&self) -> &[Any] {
         &self.status.details
     }
