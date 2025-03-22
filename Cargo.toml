@@ -3,14 +3,9 @@ name = "prost-google-rpc"
 version = "0.1.0"
 edition = "2021"
 
-[features]
-build = []
-
 [dependencies]
-heck = "0.5"
 prost = "0.13"
 prost-types = "0.13"
-quote = "1.0"
 tonic = "0.12"
 
 [build-dependencies]

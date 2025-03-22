@@ -5,11 +5,11 @@ use tonic::{Code, Status};
 use crate::proto;
 
 #[derive(Debug)]
-pub struct StatusDecoder {
+pub struct DetailsDecoder {
     status: proto::Status,
 }
 
-impl StatusDecoder {
+impl DetailsDecoder {
     pub fn from_status(status: &Status) -> Result<Self, DecodeError> {
         let status = proto::Status::decode(status.details())?;
         Ok(Self { status })

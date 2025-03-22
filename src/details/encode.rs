@@ -1,15 +1,15 @@
-use prost::{bytes::Bytes, Message};
+use prost::{bytes::Bytes, Message, Name};
 use prost_types::Any;
 use tonic::{Code, Status};
 
-use crate::{proto, to_any, TypeURL};
+use crate::proto;
 
 #[derive(Debug)]
-pub struct StatusEncoder {
+pub struct DetailsEncoder {
     details: Vec<Any>,
 }
 
-impl StatusEncoder {
+impl DetailsEncoder {
     #[must_use]
     pub fn new() -> Self {
         Self {
@@ -18,15 +18,18 @@ impl StatusEncoder {
     }
 
     #[must_use]
-    pub fn details_len(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.details.len()
     }
 
-    pub fn push_details<M>(&mut self, message: &M)
+    pub fn push<M>(&mut self, message: &M)
     where
-        M: Message + TypeURL,
+        M: Name,
     {
-        self.details.push(to_any(message));
+        self.details.push(Any {
+            type_url: M::type_url(),
+            value: message.encode_to_vec(),
+        });
     }
 
     #[must_use]
@@ -46,7 +49,7 @@ impl StatusEncoder {
     }
 }
 
-impl Default for StatusEncoder {
+impl Default for DetailsEncoder {
     fn default() -> Self {
         Self::new()
     }
